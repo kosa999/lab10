@@ -69,15 +69,15 @@ def insert_from_csv(file_path):
     print("CSV data inserted.")
 
 def insert_from_console():
-    first_name = input("Enter name: ").strip()
-    phone = input("Enter phone: ").strip()
+    first_name = input("Name: ").strip()
+    phone = input("Phone: ").strip()
     try:
         cur.execute(
             "INSERT INTO phonebook (first_name, phone) VALUES (%s, %s) ON CONFLICT (phone) DO NOTHING",
             (first_name, phone)
         )
         conn.commit()
-        print("Data inserted.")
+        print("Data inserted)")
     except Exception as e:
         print("Error inserting:", e)
 
@@ -113,7 +113,7 @@ def delete_user(identifier):
         (identifier, identifier)
     )
     conn.commit()
-    print("Data deleted.")
+    print("udaleno")
 
 # Snake game DB functions
 def get_or_create_user(username):
@@ -126,7 +126,7 @@ def get_or_create_user(username):
         cur.execute("INSERT INTO users (username) VALUES (%s) RETURNING id", (username,))
         user_id = cur.fetchone()[0]
         conn.commit()
-        print(f"Created new user: {username}")
+        print(f"Created user: {username}")
     cur.execute("SELECT score, level FROM user_score WHERE user_id=%s ORDER BY id DESC LIMIT 1", (user_id,))
     score_row = cur.fetchone()
     if score_row:
@@ -135,7 +135,7 @@ def get_or_create_user(username):
     else:
         score = 0
         level = 1
-        print("No previous games found. Starting fresh.")
+        print("U never played so starting from 0")
     return user_id, score, level
 
 def save_progress(user_id, username, score, level):
@@ -306,15 +306,15 @@ def snake_game(user_id, username, last_level):
 if __name__ == "__main__":
     while True:
         print("\nMain Menu:")
-        print("1. PhoneBook - Insert from CSV")
-        print("2. PhoneBook - Insert from Console")
-        print("3. PhoneBook - Update User")
-        print("4. PhoneBook - Query Users")
-        print("5. PhoneBook - Delete User")
-        print("6. Snake Game - Play")
-        print("7. Show Top 10 Best Runs")
+        print("1. Insert from CSV")
+        print("2. Insert from Console")
+        print("3. Update User")
+        print("4. Query Users")
+        print("5. Delete User")
+        print("6. Snake Game")
+        print("7. 10 Best Runs")
         print("8. Exit")
-        choice = input("Choose option: ")
+        choice = input("Choose option ")
 
         if choice == "1":
             path = input("Enter CSV file path: ")
