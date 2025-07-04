@@ -73,7 +73,6 @@ END;
 $$;
 """)
 
-# ✅ Fixed function with explicit alias
 cur.execute("""
 CREATE OR REPLACE FUNCTION get_phonebook_paged(p_limit INT, p_offset INT)
 RETURNS TABLE(row_number BIGINT, first_name VARCHAR, phone VARCHAR)
@@ -295,8 +294,11 @@ def insert_many_users():
         phone = input("Phone: ").strip()
         names.append(name)
         phones.append(phone)
+    if not names:
+        print("No users to insert.")
+        return
     try:
-        cur.execute("CALL insert_many_users(%s, %s)", (names, phones))
+        cur.execute("CALL insert_many_users(%s::text[], %s::text[])", (names, phones))
         conn.commit()
         print("Users inserted successfully.")
     except Exception as e:
@@ -335,7 +337,7 @@ if __name__ == "__main__":
         print("1. Insert from CSV")
         print("2. Insert from Console")
         print("3. Update User")
-        print("4. Query Users ")
+        print("4. Query Users")
         print("6. Search Users by Pattern")
         print("7. Upsert User")
         print("8. Insert Many Users")
